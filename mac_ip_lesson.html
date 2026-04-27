@@ -1,0 +1,2666 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAC-адрес и IP-адрес | Информатика 9 класс</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --navy: #F8FAFC;
+      --navy2: #F1F5F9;
+      --navy3: #E2E8F0;
+      --electric: #0284C7;
+      --electric2: #0EA5E9;
+      --green: #059669;
+      --amber: #D97706;
+      --red: #DC2626;
+      --purple: #7C3AED;
+      --white: #0F172A;
+      --muted: #475569;
+      --card: #FFFFFF;
+      --border: rgba(2, 132, 199, 0.15);
+      --font-head: 'Syne', sans-serif;
+      --font-body: 'Manrope', sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* BG GRID */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(2, 132, 199, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(2, 132, 199, 0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* GLOW ORBS */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb1 {
+      width: 600px;
+      height: 600px;
+      background: rgba(2, 132, 199, 0.08);
+      top: -200px;
+      right: -100px;
+    }
+
+    .orb2 {
+      width: 500px;
+      height: 500px;
+      background: rgba(5, 150, 105, 0.06);
+      bottom: 100px;
+      left: -150px;
+    }
+
+    .orb3 {
+      width: 400px;
+      height: 400px;
+      background: rgba(124, 58, 237, 0.06);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(248, 250, 252, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      height: 56px;
+    }
+
+    .nav-logo {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 13px;
+      color: var(--electric);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-right: auto;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0;
+      list-style: none;
+      overflow-x: auto;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 0 14px;
+      height: 56px;
+      line-height: 56px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s, border-color 0.2s;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover {
+      color: var(--electric);
+      border-color: var(--electric);
+    }
+
+    /* PROGRESS BAR */
+    #progress-bar {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--electric), var(--green));
+      z-index: 100;
+      width: 0%;
+      transition: width 0.1s;
+    }
+
+    /* WRAPPER */
+    .wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 80px 0 60px;
+    }
+
+    .hero-inner {
+      width: 100%;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(79, 195, 247, 0.1);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--electric);
+      margin-bottom: 28px;
+    }
+
+    .hero-badge::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--electric);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(1.5);
+      }
+    }
+
+    .hero h1 {
+      font-family: var(--font-head);
+      font-size: clamp(2.4rem, 7vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 .accent {
+      color: var(--electric);
+    }
+
+    .hero h1 .accent2 {
+      color: var(--green);
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 580px;
+      margin-bottom: 40px;
+      line-height: 1.8;
+    }
+
+    .hero-goals {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .goal-chip {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .goal-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--electric);
+      background: rgba(79, 195, 247, 0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      margin-top: 1px;
+    }
+
+    .goal-text {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .scroll-hint {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(6px);
+      }
+    }
+
+    .scroll-hint svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 80px 0;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--electric);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      max-width: 80px;
+    }
+
+    h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      margin-bottom: 28px;
+      line-height: 1.15;
+    }
+
+    h3 {
+      font-family: var(--font-head);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--white);
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .card:hover {
+      border-color: rgba(79, 195, 247, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--electric), transparent);
+      opacity: 0.3;
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media(max-width:640px) {
+
+      .grid2,
+      .grid3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* DEFINITION BOX */
+    .def-box {
+      background: rgba(79, 195, 247, 0.06);
+      border-left: 3px solid var(--electric);
+      border-radius: 0 12px 12px 0;
+      padding: 20px 24px;
+      margin: 20px 0;
+      font-size: 15px;
+    }
+
+    .def-box strong {
+      color: var(--electric);
+    }
+
+    /* MAC VISUAL */
+    .mac-display {
+      background: #F1F5F9;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin: 20px 0;
+      font-family: var(--font-mono);
+    }
+
+    .mac-addr {
+      font-size: clamp(1.2rem, 4vw, 1.8rem);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .mac-byte {
+      padding: 4px 6px;
+      border-radius: 6px;
+    }
+
+    .mac-oui {
+      background: rgba(79, 195, 247, 0.2);
+      color: var(--electric);
+    }
+
+    .mac-nic {
+      background: rgba(0, 230, 118, 0.15);
+      color: var(--green);
+    }
+
+    .mac-sep {
+      color: var(--muted);
+    }
+
+    .mac-legend {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 12px;
+      font-size: 12px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+
+    /* IP VISUAL */
+    .ip-display {
+      background: #F1F5F9;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin: 20px 0;
+      font-family: var(--font-mono);
+    }
+
+    .ip-addr {
+      font-size: clamp(1.4rem, 5vw, 2.2rem);
+      font-weight: 600;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .ip-octet {
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+
+    .ip-net {
+      background: rgba(79, 195, 247, 0.2);
+      color: var(--electric);
+    }
+
+    .ip-host {
+      background: rgba(255, 214, 0, 0.15);
+      color: var(--amber);
+    }
+
+    .ip-dot {
+      color: var(--muted);
+      font-size: 1.4em;
+    }
+
+    /* COMPARE TABLE */
+    .compare-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 20px 0;
+      font-size: 13.5px;
+    }
+
+    .compare-table th {
+      padding: 12px 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .compare-table th:first-child {
+      color: var(--muted);
+      text-align: left;
+    }
+
+    .compare-table th:nth-child(2) {
+      color: var(--electric);
+      background: rgba(79, 195, 247, 0.08);
+    }
+
+    .compare-table th:nth-child(3) {
+      color: var(--green);
+      background: rgba(0, 230, 118, 0.06);
+    }
+
+    .compare-table td {
+      padding: 11px 16px;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .compare-table td:first-child {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .compare-table td:nth-child(2) {
+      background: rgba(79, 195, 247, 0.04);
+    }
+
+    .compare-table td:nth-child(3) {
+      background: rgba(0, 230, 118, 0.03);
+    }
+
+    .compare-table tr:last-child td {
+      border-radius: 0 0 12px 12px;
+    }
+
+    /* DEVICE CARD */
+    .device-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin: 20px 0;
+    }
+
+    .device-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .device-card.active {
+      border-color: currentColor;
+    }
+
+    .device-card[data-color="blue"] {
+      --dc: var(--electric);
+    }
+
+    .device-card[data-color="green"] {
+      --dc: var(--green);
+    }
+
+    .device-card[data-color="amber"] {
+      --dc: var(--amber);
+    }
+
+    .device-card[data-color="purple"] {
+      --dc: var(--purple);
+    }
+
+    .device-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      border-color: var(--dc);
+    }
+
+    .device-card.active {
+      border-color: var(--dc);
+      background: rgba(2, 132, 199, 0.05);
+    }
+
+    .device-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .device-name {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--dc);
+      margin-bottom: 4px;
+    }
+
+    .device-short {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .device-detail {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .device-detail.show {
+      display: block;
+    }
+
+    .device-info-card {
+      background: #F1F5F9;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+
+    .device-info-card h4 {
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+    }
+
+    .info-row {
+      display: flex;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      font-size: 13.5px;
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-key {
+      color: var(--muted);
+      min-width: 140px;
+      font-size: 12px;
+    }
+
+    .info-val {
+      color: var(--white);
+      flex: 1;
+    }
+
+    /* TOPOLOGY */
+    .topo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .topo-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .topo-card:hover {
+      border-color: rgba(79, 195, 247, 0.4);
+    }
+
+    .topo-svg {
+      width: 80px;
+      height: 70px;
+      margin: 0 auto 12px;
+      display: block;
+    }
+
+    .topo-name {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: var(--electric);
+    }
+
+    .topo-desc {
+      font-size: 11.5px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* OSI */
+    .osi-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 3px;
+      margin: 20px 0;
+    }
+
+    .osi-row td {
+      padding: 10px 14px;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .osi-row td:first-child {
+      width: 36px;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      border-radius: 8px 0 0 8px;
+    }
+
+    .osi-row td:last-child {
+      border-radius: 0 8px 8px 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .osi-row:hover td {
+      filter: brightness(1.15);
+    }
+
+    .osi-highlight td {
+      filter: brightness(1.3) !important;
+    }
+
+    .osi-highlight td:last-child {
+      font-weight: 600;
+      color: var(--white) !important;
+    }
+
+    /* ===== INTERACTIVE TASKS ===== */
+    .tasks-section {
+      padding: 80px 0;
+    }
+
+    .task-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .task-btn {
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.03em;
+    }
+
+    .task-btn:hover {
+      border-color: var(--electric);
+      color: var(--electric);
+    }
+
+    .task-btn.active {
+      background: var(--electric);
+      border-color: var(--electric);
+      color: var(--navy);
+    }
+
+    .task-panel {
+      display: none;
+    }
+
+    .task-panel.active {
+      display: block;
+      animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* QUIZ */
+    .quiz-q {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 14px;
+    }
+
+    .quiz-q-text {
+      font-weight: 600;
+      margin-bottom: 16px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .quiz-q-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--electric);
+      margin-bottom: 8px;
+      letter-spacing: 0.1em;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .quiz-opt {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 16px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+    }
+
+    .quiz-opt:hover {
+      border-color: rgba(79, 195, 247, 0.4);
+      background: rgba(79, 195, 247, 0.05);
+    }
+
+    .quiz-opt input[type=radio] {
+      display: none;
+    }
+
+    .quiz-radio {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--muted);
+      border-radius: 50%;
+      flex-shrink: 0;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quiz-opt.selected .quiz-radio {
+      border-color: var(--electric);
+      background: var(--electric);
+    }
+
+    .quiz-opt.correct {
+      border-color: var(--green) !important;
+      background: rgba(0, 230, 118, 0.08) !important;
+      color: var(--green);
+    }
+
+    .quiz-opt.wrong {
+      border-color: var(--red) !important;
+      background: rgba(255, 82, 82, 0.08) !important;
+      color: var(--red);
+    }
+
+    .quiz-opt.correct .quiz-radio {
+      border-color: var(--green);
+      background: var(--green);
+    }
+
+    .quiz-opt.wrong .quiz-radio {
+      border-color: var(--red);
+      background: var(--red);
+    }
+
+    .quiz-feedback {
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      display: none;
+    }
+
+    .quiz-feedback.show {
+      display: block;
+    }
+
+    .quiz-feedback.ok {
+      background: rgba(0, 230, 118, 0.1);
+      border: 1px solid rgba(0, 230, 118, 0.3);
+      color: var(--green);
+    }
+
+    .quiz-feedback.err {
+      background: rgba(255, 82, 82, 0.1);
+      border: 1px solid rgba(255, 82, 82, 0.3);
+      color: var(--red);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 100px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      letter-spacing: 0.03em;
+    }
+
+    .btn-primary {
+      background: var(--electric);
+      color: var(--navy);
+    }
+
+    .btn-primary:hover {
+      background: #81d4fa;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--white);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--electric);
+      color: var(--electric);
+    }
+
+    .btn-green {
+      background: var(--green);
+      color: var(--navy);
+    }
+
+    .btn-green:hover {
+      background: #69f0ae;
+    }
+
+    .quiz-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .score-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      text-align: center;
+      display: none;
+      margin-top: 20px;
+    }
+
+    .score-box.show {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+
+    .score-num {
+      font-family: var(--font-head);
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--electric);
+    }
+
+    .score-label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* DRAG & DROP */
+    .match-game {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .match-col {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .match-col h4 {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+      font-family: var(--font-mono);
+    }
+
+    .match-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      font-size: 13.5px;
+      cursor: grab;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .match-item:hover {
+      border-color: var(--electric);
+      background: rgba(79, 195, 247, 0.07);
+    }
+
+    .match-item.dragging {
+      opacity: 0.5;
+      cursor: grabbing;
+    }
+
+    .match-item.matched-correct {
+      border-color: var(--green) !important;
+      background: rgba(0, 230, 118, 0.08) !important;
+      color: var(--green);
+      cursor: default;
+    }
+
+    .match-item.matched-wrong {
+      border-color: var(--red) !important;
+      background: rgba(255, 82, 82, 0.08) !important;
+    }
+
+    .drop-zone {
+      background: #F8FAFC;
+      border: 1px dashed rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      min-height: 46px;
+      font-size: 13.5px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      color: var(--muted);
+    }
+
+    .drop-zone.drag-over {
+      border-color: var(--electric);
+      background: rgba(79, 195, 247, 0.05);
+    }
+
+    .drop-zone.filled {
+      border-style: solid;
+      border-color: var(--border);
+      color: var(--white);
+    }
+
+    .drop-zone.correct {
+      border-color: var(--green);
+      background: rgba(0, 230, 118, 0.06);
+      color: var(--green);
+    }
+
+    .drop-zone.wrong {
+      border-color: var(--red);
+      background: rgba(255, 82, 82, 0.06);
+      color: var(--red);
+    }
+
+    /* FILL IN BLANK */
+    .fill-task {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 14px;
+    }
+
+    .fill-task p {
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+
+    .blank-input {
+      display: inline-block;
+      background: #FFFFFF;
+      border: 1px solid rgba(79, 195, 247, 0.3);
+      border-radius: 8px;
+      padding: 3px 12px;
+      color: var(--electric);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      min-width: 120px;
+      outline: none;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .blank-input:focus {
+      border-color: var(--electric);
+      background: rgba(79, 195, 247, 0.06);
+    }
+
+    .blank-input.correct {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(0, 230, 118, 0.08);
+    }
+
+    .blank-input.wrong {
+      border-color: var(--red);
+      color: var(--red);
+      background: rgba(255, 82, 82, 0.08);
+    }
+
+    /* TRUE/FALSE */
+    .tf-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tf-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .tf-statement {
+      flex: 1;
+      font-size: 14px;
+      min-width: 200px;
+    }
+
+    .tf-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .tf-btn {
+      padding: 7px 18px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+
+    .tf-btn:hover {
+      border-color: var(--electric);
+      color: var(--electric);
+    }
+
+    .tf-btn.selected-true {
+      background: rgba(0, 230, 118, 0.15);
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .tf-btn.selected-false {
+      background: rgba(255, 82, 82, 0.15);
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .tf-btn.correct {
+      background: rgba(0, 230, 118, 0.2);
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .tf-btn.wrong {
+      background: rgba(255, 82, 82, 0.2);
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .tf-result {
+      font-size: 13px;
+      display: none;
+    }
+
+    .tf-result.show {
+      display: block;
+    }
+
+    /* IP BUILDER */
+    .ip-builder {
+      background: #F1F5F9;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      text-align: center;
+    }
+
+    .ip-sliders {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .ip-slider-group {
+      text-align: center;
+    }
+
+    .ip-slider-group label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .ip-slider {
+      width: 100%;
+      -webkit-appearance: none;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(0, 0, 0, 0.1);
+      outline: none;
+      margin-bottom: 8px;
+    }
+
+    .ip-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--electric);
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(79, 195, 247, 0.5);
+    }
+
+    .ip-slider-val {
+      font-family: var(--font-mono);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--electric);
+    }
+
+    .ip-result-display {
+      font-family: var(--font-mono);
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-weight: 600;
+      color: var(--white);
+      margin: 16px 0;
+      letter-spacing: 0.05em;
+    }
+
+    .ip-class-badge {
+      display: inline-block;
+      padding: 6px 20px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+    }
+
+    /* SUMMARY */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .summary-card h4 {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--electric);
+      margin-bottom: 14px;
+    }
+
+    .summary-item {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .summary-item::before {
+      content: '→';
+      color: var(--electric);
+      flex-shrink: 0;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    footer a {
+      color: var(--electric);
+      text-decoration: none;
+    }
+
+    /* UTIL */
+    .mt8 {
+      margin-top: 8px;
+    }
+
+    .mt16 {
+      margin-top: 16px;
+    }
+
+    .mt20 {
+      margin-top: 20px;
+    }
+
+    .mb0 {
+      margin-bottom: 0;
+    }
+
+    .text-muted {
+      color: var(--muted);
+    }
+
+    .text-electric {
+      color: var(--electric);
+    }
+
+    .text-green {
+      color: var(--green);
+    }
+
+    .text-amber {
+      color: var(--amber);
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    .tag-blue {
+      background: rgba(79, 195, 247, 0.15);
+      color: var(--electric);
+    }
+
+    .tag-green {
+      background: rgba(0, 230, 118, 0.15);
+      color: var(--green);
+    }
+
+    .tag-amber {
+      background: rgba(255, 214, 0, 0.15);
+      color: var(--amber);
+    }
+
+    .tag-red {
+      background: rgba(255, 82, 82, 0.15);
+      color: var(--red);
+    }
+
+    .tag-purple {
+      background: rgba(206, 147, 216, 0.15);
+      color: var(--purple);
+    }
+
+    .check {
+      color: var(--green);
+    }
+
+    .cross {
+      color: var(--red);
+    }
+
+    ul.styled {
+      list-style: none;
+    }
+
+    ul.styled li {
+      padding: 4px 0 4px 18px;
+      position: relative;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    ul.styled li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--electric);
+    }
+
+    /* ANIMATED COUNTER */
+    .stat-grid {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    .stat-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .stat-val {
+      font-family: var(--font-head);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--electric);
+    }
+
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 40px 0;
+    }
+
+    @media(max-width:480px) {
+      .ip-sliders {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .match-game {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <div id="progress-bar"></div>
+
+  <nav>
+    <div class="nav-logo">Инфо · 9 класс</div>
+    <ul class="nav-links">
+      <li><a href="#mac">MAC-адрес</a></li>
+      <li><a href="#ip">IP-адрес</a></li>
+      <li><a href="#compare">Сравнение</a></li>
+      <li><a href="#devices">Устройства</a></li>
+      <li><a href="#tasks">Задания</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="wrapper">
+      <div class="hero-inner">
+        <div class="hero-badge">Информатика · 9 класс · Тема 9.5</div>
+        <h1>
+          <span class="accent">MAC</span>-адрес<br>
+          и <span class="accent2">IP</span>-адрес
+        </h1>
+        <p class="hero-desc">
+          Полный интерактивный урок по адресации в компьютерных сетях, компонентам сети и принципам их организации.
+        </p>
+        <div class="hero-goals">
+          <div class="goal-chip"><span class="goal-num">9.5.1.1</span><span class="goal-text">Объяснять назначение
+              MAC-адреса</span></div>
+          <div class="goal-chip"><span class="goal-num">9.5.1.2</span><span class="goal-text">Объяснять назначение
+              IP-адреса</span></div>
+          <div class="goal-chip"><span class="goal-num">9.5.1.3</span><span class="goal-text">Принципы организации
+              компьютерных сетей</span></div>
+          <div class="goal-chip"><span class="goal-num">9.5.1.4</span><span class="goal-text">Компоненты сети и их
+              назначение</span></div>
+        </div>
+        <div class="scroll-hint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+          Прокрутите вниз для изучения материала
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO: NETWORKS -->
+  <section id="networks">
+    <div class="wrapper">
+      <div class="section-label">Введение</div>
+      <h2>Компьютерные сети</h2>
+
+      <div class="def-box">
+        <strong>Компьютерная сеть</strong> — совокупность двух и более компьютеров, соединённых каналами передачи
+        информации для совместного использования ресурсов и обмена данными.
+      </div>
+
+      <div class="grid2 mt20">
+        <div class="card">
+          <h3 class="text-green">✅ Преимущества сети</h3>
+          <ul class="styled">
+            <li>Мгновенная передача файлов всем пользователям</li>
+            <li>Совместный доступ к принтерам и устройствам</li>
+            <li>Общие базы данных и программы</li>
+            <li>Централизованное управление</li>
+            <li>Снижение затрат на оборудование</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 style="color:var(--red)">❌ Недостатки сети</h3>
+          <ul class="styled">
+            <li>Требует оборудования и настройки</li>
+            <li>Риски безопасности (взлом, вирусы)</li>
+            <li>Зависимость от центрального узла</li>
+            <li>Затраты на обслуживание</li>
+            <li>При сбое сети — потеря доступа</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Topologies -->
+      <h3 class="mt20" style="margin-bottom:16px">Топологии сетей</h3>
+      <div class="topo-grid">
+        <!-- Bus -->
+        <div class="topo-card">
+          <svg class="topo-svg" viewBox="0 0 80 70">
+            <line x1="10" y1="35" x2="70" y2="35" stroke="#0284C7" stroke-width="2.5" />
+            <circle cx="10" cy="35" r="7" fill="#E2E8F0" stroke="#0284C7" stroke-width="2" />
+            <circle cx="30" cy="35" r="7" fill="#E2E8F0" stroke="#0284C7" stroke-width="2" />
+            <circle cx="50" cy="35" r="7" fill="#E2E8F0" stroke="#0284C7" stroke-width="2" />
+            <circle cx="70" cy="35" r="7" fill="#E2E8F0" stroke="#0284C7" stroke-width="2" />
+            <rect x="5" y="30" width="5" height="10" fill="#0284C7" rx="1" />
+            <rect x="70" y="30" width="5" height="10" fill="#0284C7" rx="1" />
+          </svg>
+          <div class="topo-name">Шина (Bus)</div>
+          <div class="topo-desc">Все устройства на одном кабеле. Просто, но ненадёжно.</div>
+        </div>
+        <!-- Star -->
+        <div class="topo-card">
+          <svg class="topo-svg" viewBox="0 0 80 70">
+            <circle cx="40" cy="35" r="9" fill="#F1F5F9" stroke="#059669" stroke-width="2.5" />
+            <circle cx="15" cy="12" r="6" fill="#E2E8F0" stroke="#0284C7" stroke-width="1.5" />
+            <circle cx="65" cy="12" r="6" fill="#E2E8F0" stroke="#0284C7" stroke-width="1.5" />
+            <circle cx="10" cy="50" r="6" fill="#E2E8F0" stroke="#0284C7" stroke-width="1.5" />
+            <circle cx="70" cy="50" r="6" fill="#E2E8F0" stroke="#0284C7" stroke-width="1.5" />
+            <circle cx="40" cy="62" r="6" fill="#E2E8F0" stroke="#0284C7" stroke-width="1.5" />
+            <line x1="40" y1="35" x2="15" y2="12" stroke="#0284C7" stroke-width="1.5" />
+            <line x1="40" y1="35" x2="65" y2="12" stroke="#0284C7" stroke-width="1.5" />
+            <line x1="40" y1="35" x2="10" y2="50" stroke="#0284C7" stroke-width="1.5" />
+            <line x1="40" y1="35" x2="70" y2="50" stroke="#0284C7" stroke-width="1.5" />
+            <line x1="40" y1="35" x2="40" y2="62" stroke="#0284C7" stroke-width="1.5" />
+          </svg>
+          <div class="topo-name">Звезда (Star)</div>
+          <div class="topo-desc">Все подключены к центральному узлу. Надёжно, удобно.</div>
+        </div>
+        <!-- Ring -->
+        <div class="topo-card">
+          <svg class="topo-svg" viewBox="0 0 80 70">
+            <circle cx="40" cy="35" r="24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-dasharray="5 3" />
+            <circle cx="40" cy="11" r="6" fill="#E2E8F0" stroke="#0284C7" stroke-width="1.5" />
+            <circle cx="64" cy="35" r="6" fill="#E2E8F0" stroke="#0284C7" stroke-width="1.5" />
+            <circle cx="40" cy="59" r="6" fill="#E2E8F0" stroke="#0284C7" stroke-width="1.5" />
+            <circle cx="16" cy="35" r="6" fill="#E2E8F0" stroke="#0284C7" stroke-width="1.5" />
+          </svg>
+          <div class="topo-name">Кольцо (Ring)</div>
+          <div class="topo-desc">Устройства в замкнутой цепи. Равный доступ.</div>
+        </div>
+        <!-- Mesh -->
+        <div class="topo-card">
+          <svg class="topo-svg" viewBox="0 0 80 70">
+            <line x1="15" y1="15" x2="65" y2="15" stroke="#D97706" stroke-width="1.5" />
+            <line x1="15" y1="15" x2="15" y2="55" stroke="#D97706" stroke-width="1.5" />
+            <line x1="15" y1="15" x2="65" y2="55" stroke="#D97706" stroke-width="1.5" />
+            <line x1="65" y1="15" x2="65" y2="55" stroke="#D97706" stroke-width="1.5" />
+            <line x1="65" y1="15" x2="15" y2="55" stroke="#D97706" stroke-width="1.5" />
+            <line x1="15" y1="55" x2="65" y2="55" stroke="#D97706" stroke-width="1.5" />
+            <line x1="40" y1="35" x2="15" y2="15" stroke="#D97706" stroke-width="1.5" />
+            <line x1="40" y1="35" x2="65" y2="15" stroke="#D97706" stroke-width="1.5" />
+            <line x1="40" y1="35" x2="15" y2="55" stroke="#D97706" stroke-width="1.5" />
+            <line x1="40" y1="35" x2="65" y2="55" stroke="#D97706" stroke-width="1.5" />
+            <circle cx="15" cy="15" r="6" fill="#E2E8F0" stroke="#0284C7" stroke-width="1.5" />
+            <circle cx="65" cy="15" r="6" fill="#E2E8F0" stroke="#0284C7" stroke-width="1.5" />
+            <circle cx="15" cy="55" r="6" fill="#E2E8F0" stroke="#0284C7" stroke-width="1.5" />
+            <circle cx="65" cy="55" r="6" fill="#E2E8F0" stroke="#0284C7" stroke-width="1.5" />
+            <circle cx="40" cy="35" r="7" fill="#E2E8F0" stroke="#D97706" stroke-width="2" />
+          </svg>
+          <div class="topo-name">Ячейка (Mesh)</div>
+          <div class="topo-desc">Каждый связан с несколькими. Максимум надёжности.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAC ADDRESS -->
+  <section id="mac">
+    <div class="wrapper">
+      <div class="section-label">9.5.1.1</div>
+      <h2>MAC-адрес — физический адрес</h2>
+
+      <div class="def-box">
+        <strong>MAC-адрес</strong> (Media Access Control address) — уникальный идентификатор сетевого устройства,
+        «зашитый» производителем в сетевую карту. Это <em>аппаратный</em> адрес устройства.
+      </div>
+
+      <h3 class="mt20">Структура MAC-адреса</h3>
+      <div class="mac-display">
+        <div class="mac-addr">
+          <span class="mac-byte mac-oui">00</span><span class="mac-sep">:</span>
+          <span class="mac-byte mac-oui">1A</span><span class="mac-sep">:</span>
+          <span class="mac-byte mac-oui">2B</span><span class="mac-sep">:</span>
+          <span class="mac-byte mac-nic">3C</span><span class="mac-sep">:</span>
+          <span class="mac-byte mac-nic">4D</span><span class="mac-sep">:</span>
+          <span class="mac-byte mac-nic">5E</span>
+        </div>
+        <div class="mac-legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background:rgba(2, 132, 199, 0.5)"></div>
+            <span style="color:var(--electric);font-size:12px">OUI — код производителя (пердые 24 бит)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:rgba(5, 150, 105, 0.4)"></div>
+            <span style="color:var(--green);font-size:12px">NIC — номер карты (последние 24 бит)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-item">
+          <div class="stat-val">48</div>
+          <div class="stat-lbl">бит (6 байт)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val mono">16</div>
+          <div class="stat-lbl">-ричная система</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">281</div>
+          <div class="stat-lbl">триллион адресов</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">L2</div>
+          <div class="stat-lbl">уровень OSI</div>
+        </div>
+      </div>
+
+      <div class="grid2 mt20">
+        <div class="card">
+          <h3>🔑 Ключевые свойства</h3>
+          <ul class="styled">
+            <li><strong>Уникальность</strong> — нет двух одинаковых MAC-адресов в мире</li>
+            <li><strong>Аппаратный</strong> — прошит в ПЗУ сетевой карты</li>
+            <li><strong>Локальный</strong> — действует только в пределах LAN</li>
+            <li><strong>Канальный уровень</strong> — работает на Layer 2 модели OSI</li>
+            <li><strong>Формат</strong> — 6 байт в шестнадцатеричном виде</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>💻 Как узнать MAC-адрес</h3>
+          <div style="margin-bottom:12px">
+            <div class="tag tag-blue" style="margin-bottom:6px">Windows</div>
+            <div
+              style="background:#F1F5F9;border-radius:8px;padding:10px 14px;font-family:var(--font-mono);font-size:13px;color:var(--green)">
+              ipconfig /all</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px">→ «Физический адрес»</div>
+          </div>
+          <div>
+            <div class="tag tag-green" style="margin-bottom:6px">Linux / macOS</div>
+            <div
+              style="background:#F1F5F9;border-radius:8px;padding:10px 14px;font-family:var(--font-mono);font-size:13px;color:var(--green)">
+              ip addr show<br>ifconfig</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px">→ поле «ether»</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt20" style="background:rgba(79,195,247,0.05);border-color:rgba(79,195,247,0.3)">
+        <h3>🔗 Протокол ARP</h3>
+        <p style="font-size:14px;color:var(--muted);line-height:1.7">
+          <strong style="color:var(--white)">ARP</strong> (Address Resolution Protocol) — связывает IP-адрес с
+          MAC-адресом.
+          Когда компьютер А хочет отправить данные компьютеру Б, он знает только IP-адрес Б.
+          ARP рассылает <em>broadcast-запрос</em>: «Кто имеет IP 192.168.1.5?»
+          Компьютер Б отвечает своим MAC-адресом. Далее данные доставляются по MAC.
+        </p>
+        <div
+          style="margin-top:14px;font-family:var(--font-mono);font-size:12px;color:var(--muted);background:#F1F5F9;padding:12px 16px;border-radius:8px;line-height:1.8">
+          A → ARP Request (broadcast): «Кто 192.168.1.5?»<br>
+          B → ARP Reply: «Это я, мой MAC: 00:1A:2B:3C:4D:5E»<br>
+          A → Отправляет кадр напрямую на MAC B
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IP ADDRESS -->
+  <section id="ip">
+    <div class="wrapper">
+      <div class="section-label">9.5.1.2</div>
+      <h2>IP-адрес — логический адрес</h2>
+
+      <div class="def-box">
+        <strong>IP-адрес</strong> (Internet Protocol address) — логический адрес, который назначается устройству в сети
+        для его идентификации и обеспечения маршрутизации данных. В отличие от MAC, IP может меняться.
+      </div>
+
+      <h3 class="mt20">Структура IPv4-адреса</h3>
+      <div class="ip-display">
+        <div class="ip-addr">
+          <span class="ip-octet ip-net">192</span><span class="ip-dot">.</span>
+          <span class="ip-octet ip-net">168</span><span class="ip-dot">.</span>
+          <span class="ip-octet ip-net">1</span><span class="ip-dot">.</span>
+          <span class="ip-octet ip-host">105</span>
+        </div>
+        <div style="display:flex;justify-content:center;gap:24px;margin-top:12px;font-size:12px;flex-wrap:wrap">
+          <span style="color:var(--electric)">■ Адрес сети (Network)</span>
+          <span style="color:var(--amber)">■ Адрес хоста (Host)</span>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--muted)">4 октета × 8 бит = 32 бита | Диапазон каждого
+          октета: 0–255</div>
+      </div>
+
+      <div class="grid2 mt20">
+        <div class="card">
+          <h3 style="color:var(--electric)">IPv4</h3>
+          <ul class="styled">
+            <li>32 бита (4 байта)</li>
+            <li>Десятичная запись: 192.168.1.1</li>
+            <li>~4,3 миллиарда адресов</li>
+            <li>Адреса заканчиваются!</li>
+          </ul>
+          <div class="tag tag-amber mt8">Действующий стандарт</div>
+        </div>
+        <div class="card">
+          <h3 style="color:var(--purple)">IPv6</h3>
+          <ul class="styled">
+            <li>128 бит (16 байт)</li>
+            <li>Шестнадцатеричная: 2001:0db8::1</li>
+            <li>~340 ундециллионов адресов</li>
+            <li>Заменит IPv4 полностью</li>
+          </ul>
+          <div class="tag tag-purple mt8">Новый стандарт</div>
+        </div>
+      </div>
+
+      <h3 class="mt20" style="margin-bottom:14px">Классы IPv4-адресов</h3>
+      <div style="overflow-x:auto">
+        <table class="compare-table" style="min-width:500px">
+          <thead>
+            <tr>
+              <th style="color:var(--muted);text-align:left">Класс</th>
+              <th style="color:var(--electric)">Диапазон</th>
+              <th style="color:var(--green)">Применение</th>
+              <th style="color:var(--amber)">Частный диапазон</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag tag-blue">A</span></td>
+              <td>1.0.0.0 – 126.x.x.x</td>
+              <td>Крупные сети</td>
+              <td>10.0.0.0/8</td>
+            </tr>
+            <tr>
+              <td><span class="tag tag-blue">B</span></td>
+              <td>128.0.0.0 – 191.x.x.x</td>
+              <td>Средние сети</td>
+              <td>172.16.0.0/12</td>
+            </tr>
+            <tr>
+              <td><span class="tag tag-blue">C</span></td>
+              <td>192.0.0.0 – 223.x.x.x</td>
+              <td>Малые (ЛВС)</td>
+              <td>192.168.0.0/16</td>
+            </tr>
+            <tr>
+              <td><span class="tag tag-blue">D</span></td>
+              <td>224.0.0.0 – 239.x.x.x</td>
+              <td>Multicast</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="tag tag-blue">E</span></td>
+              <td>240.0.0.0 – 255.x.x.x</td>
+              <td>Зарезервировано</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid2 mt20">
+        <div class="card" style="border-color:rgba(255,214,0,0.3)">
+          <h3 style="color:var(--amber)">🔒 Статический IP</h3>
+          <ul class="styled">
+            <li>Назначается вручную</li>
+            <li>Не меняется при перезагрузке</li>
+            <li>Используется: серверы, принтеры</li>
+          </ul>
+        </div>
+        <div class="card" style="border-color:rgba(0,230,118,0.3)">
+          <h3 style="color:var(--green)">⚡ Динамический IP (DHCP)</h3>
+          <ul class="styled">
+            <li>Назначается автоматически</li>
+            <li>Может меняться каждый раз</li>
+            <li>Используется: ПК, ноутбуки</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card mt20">
+        <h3>💻 Как узнать IP-адрес</h3>
+        <div class="grid2">
+          <div>
+            <div class="tag tag-blue" style="margin-bottom:8px">Windows</div>
+            <div
+              style="background:#F1F5F9;border-radius:8px;padding:10px 14px;font-family:var(--font-mono);font-size:13px;color:var(--green)">
+              ipconfig</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px">→ «IPv4-адрес»</div>
+          </div>
+          <div>
+            <div class="tag tag-green" style="margin-bottom:8px">Linux / macOS</div>
+            <div
+              style="background:#F1F5F9;border-radius:8px;padding:10px 14px;font-family:var(--font-mono);font-size:13px;color:var(--green)">
+              ip addr show</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px">→ поле «inet»</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section id="compare">
+    <div class="wrapper">
+      <div class="section-label">Сравнение</div>
+      <h2>MAC-адрес vs IP-адрес</h2>
+      <div style="overflow-x:auto">
+        <table class="compare-table" style="min-width:500px">
+          <thead>
+            <tr>
+              <th>Характеристика</th>
+              <th>MAC-адрес</th>
+              <th>IP-адрес</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Тип адреса</td>
+              <td>Физический (аппаратный)</td>
+              <td>Логический (программный)</td>
+            </tr>
+            <tr>
+              <td>Уровень OSI</td>
+              <td>Канальный (Layer 2)</td>
+              <td>Сетевой (Layer 3)</td>
+            </tr>
+            <tr>
+              <td>Назначение</td>
+              <td>Производителем</td>
+              <td>Администратором / DHCP</td>
+            </tr>
+            <tr>
+              <td>Постоянство</td>
+              <td>Постоянный</td>
+              <td>Может меняться</td>
+            </tr>
+            <tr>
+              <td>Видимость</td>
+              <td>Только в LAN</td>
+              <td>Везде (LAN + WAN)</td>
+            </tr>
+            <tr>
+              <td>Формат</td>
+              <td class="mono">00:1A:2B:3C:4D:5E</td>
+              <td class="mono">192.168.1.1</td>
+            </tr>
+            <tr>
+              <td>Аналогия</td>
+              <td>Серийный номер (уник.)</td>
+              <td>Домашний адрес</td>
+            </tr>
+            <tr>
+              <td>Что использует</td>
+              <td>Коммутатор</td>
+              <td>Маршрутизатор</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- OSI Model -->
+      <h3 class="mt20" style="margin-bottom:14px">Место в модели OSI</h3>
+      <div style="overflow-x:auto">
+        <table class="osi-table" style="min-width:400px">
+          <tbody>
+            <tr class="osi-row">
+              <td style="background:rgba(206,147,216,0.15);color:var(--purple)">7</td>
+              <td style="background:rgba(206,147,216,0.08)">Прикладной</td>
+              <td>HTTP, FTP, DNS, SMTP</td>
+              <td>URL</td>
+            </tr>
+            <tr class="osi-row">
+              <td style="background:rgba(206,147,216,0.12);color:var(--purple)">6</td>
+              <td style="background:rgba(206,147,216,0.06)">Представительный</td>
+              <td>SSL/TLS, JPEG, MP3</td>
+              <td>—</td>
+            </tr>
+            <tr class="osi-row">
+              <td style="background:rgba(206,147,216,0.10);color:var(--purple)">5</td>
+              <td style="background:rgba(206,147,216,0.04)">Сеансовый</td>
+              <td>NetBIOS, RPC</td>
+              <td>—</td>
+            </tr>
+            <tr class="osi-row">
+              <td style="background:rgba(255,214,0,0.15);color:var(--amber)">4</td>
+              <td style="background:rgba(255,214,0,0.06)">Транспортный</td>
+              <td>TCP, UDP</td>
+              <td>Порты (0–65535)</td>
+            </tr>
+            <tr class="osi-row osi-highlight">
+              <td style="background:rgba(0,230,118,0.25);color:var(--green)">3</td>
+              <td style="background:rgba(0,230,118,0.1)">Сетевой ← IP</td>
+              <td>IP, ICMP, маршрутизатор</td>
+              <td><span class="tag tag-green">IP-адрес</span></td>
+            </tr>
+            <tr class="osi-row osi-highlight">
+              <td style="background:rgba(79,195,247,0.25);color:var(--electric)">2</td>
+              <td style="background:rgba(79,195,247,0.1)">Канальный ← MAC</td>
+              <td>Ethernet, Wi-Fi, коммутатор</td>
+              <td><span class="tag tag-blue">MAC-адрес</span></td>
+            </tr>
+            <tr class="osi-row">
+              <td style="background:rgba(79,195,247,0.12);color:var(--electric)">1</td>
+              <td style="background:rgba(79,195,247,0.04)">Физический</td>
+              <td>Кабели, хабы, сигналы</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEVICES -->
+  <section id="devices">
+    <div class="wrapper">
+      <div class="section-label">9.5.1.4</div>
+      <h2>Компоненты сети</h2>
+      <p class="text-muted" style="margin-bottom:20px">Нажмите на устройство, чтобы узнать подробнее.</p>
+
+      <div class="device-grid">
+        <div class="device-card" data-color="blue" data-device="nic" onclick="showDevice('nic', this)">
+          <div class="device-icon">🔌</div>
+          <div class="device-name">Сетевая карта</div>
+          <div class="device-short">NIC · Layer 2</div>
+        </div>
+        <div class="device-card" data-color="green" data-device="switch" onclick="showDevice('switch', this)">
+          <div class="device-icon">🔀</div>
+          <div class="device-name">Коммутатор</div>
+          <div class="device-short">Switch · Layer 2</div>
+        </div>
+        <div class="device-card" data-color="amber" data-device="hub" onclick="showDevice('hub', this)">
+          <div class="device-icon">📡</div>
+          <div class="device-name">Концентратор</div>
+          <div class="device-short">Hub · Layer 1</div>
+        </div>
+        <div class="device-card" data-color="purple" data-device="router" onclick="showDevice('router', this)">
+          <div class="device-icon">🌐</div>
+          <div class="device-name">Маршрутизатор</div>
+          <div class="device-short">Router · Layer 3</div>
+        </div>
+      </div>
+
+      <div id="device-detail-nic" class="device-detail">
+        <div class="device-info-card">
+          <h4>🔌 Сетевая карта (NIC — Network Interface Card)</h4>
+          <div class="info-row"><span class="info-key">Назначение</span><span class="info-val">Подключает компьютер к
+              сети (проводной или беспроводной)</span></div>
+          <div class="info-row"><span class="info-key">Адрес</span><span class="info-val">Содержит уникальный MAC-адрес,
+              «прошитый» производителем</span></div>
+          <div class="info-row"><span class="info-key">Типы</span><span class="info-val">Проводная (Ethernet, RJ-45) и
+              беспроводная (Wi-Fi, радиоантенна)</span></div>
+          <div class="info-row"><span class="info-key">Скорость</span><span class="info-val">10 / 100 / 1000 Мбит/с
+              (Ethernet), до 9,6 Гбит/с (Wi-Fi 6)</span></div>
+          <div class="info-row"><span class="info-key">Установка</span><span class="info-val">Встроенная (на материнской
+              плате) или внешняя (PCI / USB)</span></div>
+          <div class="info-row"><span class="info-key">Уровень OSI</span><span class="info-val"><span
+                class="tag tag-blue">Layer 2 — Канальный</span></span></div>
+          <div class="info-row"><span class="info-key">💡 Факт</span><span class="info-val">Современные ПК имеют обе
+              карты: проводную и беспроводную</span></div>
+        </div>
+      </div>
+
+      <div id="device-detail-switch" class="device-detail">
+        <div class="device-info-card">
+          <h4>🔀 Коммутатор (Switch)</h4>
+          <div class="info-row"><span class="info-key">Назначение</span><span class="info-val">Соединяет устройства в
+              LAN, передаёт данные только нужному получателю</span></div>
+          <div class="info-row"><span class="info-key">Адресация</span><span class="info-val">Использует MAC-адреса
+              (хранит таблицу MAC — порт)</span></div>
+          <div class="info-row"><span class="info-key">Передача</span><span class="info-val">Unicast — только на нужный
+              порт, не на все</span></div>
+          <div class="info-row"><span class="info-key">Порты</span><span class="info-val">Обычно 8, 16, 24, 48
+              портов</span></div>
+          <div class="info-row"><span class="info-key">Скорость</span><span class="info-val">Полный дуплекс — не делит
+              полосу между устройствами</span></div>
+          <div class="info-row"><span class="info-key">Уровень OSI</span><span class="info-val"><span
+                class="tag tag-blue">Layer 2 — Канальный</span> (некоторые Layer 3)</span></div>
+          <div class="info-row"><span class="info-key">💡 Факт</span><span class="info-val">Коммутатор умнее хаба:
+              «помнит», какое устройство на каком порту</span></div>
+        </div>
+      </div>
+
+      <div id="device-detail-hub" class="device-detail">
+        <div class="device-info-card">
+          <h4>📡 Концентратор (Hub)</h4>
+          <div class="info-row"><span class="info-key">Назначение</span><span class="info-val">Соединяет устройства и
+              транслирует данные на ВСЕ порты</span></div>
+          <div class="info-row"><span class="info-key">Адресация</span><span class="info-val">Не использует адреса —
+              передаёт всем без разбора</span></div>
+          <div class="info-row"><span class="info-key">Передача</span><span class="info-val">Broadcast — рассылка на все
+              порты одновременно</span></div>
+          <div class="info-row"><span class="info-key">Проблема</span><span class="info-val">Коллизии — все устройства в
+              одном домене коллизий</span></div>
+          <div class="info-row"><span class="info-key">Скорость</span><span class="info-val">Делит пропускную
+              способность между всеми устройствами</span></div>
+          <div class="info-row"><span class="info-key">Уровень OSI</span><span class="info-val"><span
+                class="tag tag-amber">Layer 1 — Физический</span></span></div>
+          <div class="info-row"><span class="info-key">⚠️ Статус</span><span class="info-val">Устарел — заменён
+              коммутаторами из-за низкой эффективности</span></div>
+        </div>
+      </div>
+
+      <div id="device-detail-router" class="device-detail">
+        <div class="device-info-card">
+          <h4>🌐 Маршрутизатор (Router)</h4>
+          <div class="info-row"><span class="info-key">Назначение</span><span class="info-val">Соединяет несколько сетей
+              и определяет маршрут для пакетов</span></div>
+          <div class="info-row"><span class="info-key">Адресация</span><span class="info-val">Использует IP-адреса и
+              таблицы маршрутизации</span></div>
+          <div class="info-row"><span class="info-key">Функции</span><span class="info-val">Маршрутизация, NAT,
+              DHCP-сервер, межсетевой экран</span></div>
+          <div class="info-row"><span class="info-key">Применение</span><span class="info-val">LAN ↔ WAN, LAN ↔
+              Internet</span></div>
+          <div class="info-row"><span class="info-key">Уровень OSI</span><span class="info-val"><span
+                class="tag tag-purple">Layer 3 — Сетевой</span></span></div>
+          <div class="info-row"><span class="info-key">💡 Факт</span><span class="info-val">Домашний Wi-Fi роутер =
+              маршрутизатор + коммутатор + WAP в одном корпусе</span></div>
+        </div>
+      </div>
+
+      <!-- Wired vs Wireless -->
+      <h3 class="mt20" style="margin-bottom:14px">Проводные и беспроводные сети</h3>
+      <div style="overflow-x:auto">
+        <table class="compare-table" style="min-width:480px">
+          <thead>
+            <tr>
+              <th>Параметр</th>
+              <th>Проводная (LAN)</th>
+              <th>Беспроводная (Wi-Fi)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Среда</td>
+              <td>Кабель (UTP, оптоволокно)</td>
+              <td>Радиоволны (2.4 / 5 / 6 ГГц)</td>
+            </tr>
+            <tr>
+              <td>Скорость</td>
+              <td>До 100 Гбит/с</td>
+              <td>Wi-Fi 6: до 9.6 Гбит/с</td>
+            </tr>
+            <tr>
+              <td>Надёжность</td>
+              <td>Высокая ✅</td>
+              <td>Зависит от помех ⚠️</td>
+            </tr>
+            <tr>
+              <td>Безопасность</td>
+              <td>Высокая ✅</td>
+              <td>Нужно WPA2/WPA3 🔒</td>
+            </tr>
+            <tr>
+              <td>Мобильность</td>
+              <td>Ограничена кабелем ❌</td>
+              <td>Высокая ✅</td>
+            </tr>
+            <tr>
+              <td>Установка</td>
+              <td>Сложнее (кабели) ⚠️</td>
+              <td>Проще ✅</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE TASKS -->
+  <section class="tasks-section" id="tasks">
+    <div class="wrapper">
+      <div class="section-label">Практика</div>
+      <h2>Интерактивные задания</h2>
+
+      <div class="task-nav">
+        <button class="task-btn active" onclick="switchTask('quiz')">📝 Тест</button>
+        <button class="task-btn" onclick="switchTask('match')">🔗 Сопоставление</button>
+        <button class="task-btn" onclick="switchTask('fill')">✏️ Заполни пропуски</button>
+        <button class="task-btn" onclick="switchTask('truefalse')">✅ Верно/Неверно</button>
+        <button class="task-btn" onclick="switchTask('ipbuilder')">🛠️ Конструктор IP</button>
+      </div>
+
+      <!-- QUIZ -->
+      <div id="panel-quiz" class="task-panel active">
+        <div id="quiz-container"></div>
+        <div class="quiz-actions">
+          <button class="btn btn-primary" onclick="checkQuiz()">Проверить ответы</button>
+          <button class="btn btn-outline" onclick="resetQuiz()">Сбросить</button>
+        </div>
+        <div id="quiz-score" class="score-box">
+          <div class="score-num" id="score-num">0/10</div>
+          <div class="score-label" id="score-label"></div>
+        </div>
+      </div>
+
+      <!-- MATCH -->
+      <div id="panel-match" class="task-panel">
+        <p class="text-muted" style="margin-bottom:16px;font-size:14px">Перетащите понятие к правильному определению.
+        </p>
+        <div class="match-game">
+          <div class="match-col">
+            <h4>Понятия</h4>
+            <div id="match-terms"></div>
+          </div>
+          <div class="match-col" style="flex:2">
+            <h4>Определения</h4>
+            <div id="match-defs"></div>
+          </div>
+        </div>
+        <div class="quiz-actions" style="margin-top:16px">
+          <button class="btn btn-primary" onclick="checkMatch()">Проверить</button>
+          <button class="btn btn-outline" onclick="resetMatch()">Сбросить</button>
+        </div>
+        <div id="match-result" style="display:none;margin-top:14px;padding:14px 18px;border-radius:12px;font-size:14px">
+        </div>
+      </div>
+
+      <!-- FILL IN BLANK -->
+      <div id="panel-fill" class="task-panel">
+        <div id="fill-container"></div>
+        <div class="quiz-actions">
+          <button class="btn btn-primary" onclick="checkFill()">Проверить</button>
+          <button class="btn btn-outline" onclick="resetFill()">Сбросить</button>
+        </div>
+        <div id="fill-score" class="score-box">
+          <div class="score-num" id="fill-score-num">0/6</div>
+          <div class="score-label" id="fill-score-label"></div>
+        </div>
+      </div>
+
+      <!-- TRUE/FALSE -->
+      <div id="panel-truefalse" class="task-panel">
+        <div class="tf-list" id="tf-container"></div>
+        <div class="quiz-actions" style="margin-top:16px">
+          <button class="btn btn-primary" onclick="checkTF()">Проверить</button>
+          <button class="btn btn-outline" onclick="resetTF()">Сбросить</button>
+        </div>
+        <div id="tf-score" class="score-box">
+          <div class="score-num" id="tf-score-num">0/8</div>
+          <div class="score-label" id="tf-score-label"></div>
+        </div>
+      </div>
+
+      <!-- IP BUILDER -->
+      <div id="panel-ipbuilder" class="task-panel">
+        <div class="ip-builder">
+          <h3 style="margin-bottom:8px">Конструктор IP-адреса</h3>
+          <p class="text-muted" style="font-size:13px;margin-bottom:20px">Двигайте ползунки, чтобы изменить октеты
+            адреса. Класс и тип определяются автоматически.</p>
+          <div class="ip-sliders">
+            <div class="ip-slider-group">
+              <label>Октет 1</label>
+              <input type="range" class="ip-slider" id="oct1" min="1" max="254" value="192" oninput="updateIP()">
+              <div class="ip-slider-val" id="oct1-val">192</div>
+            </div>
+            <div class="ip-slider-group">
+              <label>Октет 2</label>
+              <input type="range" class="ip-slider" id="oct2" min="0" max="255" value="168" oninput="updateIP()">
+              <div class="ip-slider-val" id="oct2-val">168</div>
+            </div>
+            <div class="ip-slider-group">
+              <label>Октет 3</label>
+              <input type="range" class="ip-slider" id="oct3" min="0" max="255" value="1" oninput="updateIP()">
+              <div class="ip-slider-val" id="oct3-val">1</div>
+            </div>
+            <div class="ip-slider-group">
+              <label>Октет 4</label>
+              <input type="range" class="ip-slider" id="oct4" min="0" max="255" value="100" oninput="updateIP()">
+              <div class="ip-slider-val" id="oct4-val">100</div>
+            </div>
+          </div>
+          <div class="ip-result-display" id="ip-result">192.168.1.100</div>
+          <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+            <span class="ip-class-badge" id="ip-class-badge">Класс C</span>
+            <span class="ip-class-badge" id="ip-private-badge">Частный</span>
+          </div>
+          <div id="ip-info" style="font-size:13px;color:var(--muted);line-height:1.8;max-width:480px;margin:0 auto">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUMMARY -->
+  <section>
+    <div class="wrapper">
+      <div class="section-label">Итоги</div>
+      <h2>Краткий справочник</h2>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <h4>MAC-адрес</h4>
+          <div class="summary-item">48 бит, 6 байт</div>
+          <div class="summary-item">Шестнадцатеричный формат</div>
+          <div class="summary-item">OUI (24 бит) + NIC (24 бит)</div>
+          <div class="summary-item">Layer 2, только в LAN</div>
+          <div class="summary-item">Постоянный, аппаратный</div>
+        </div>
+        <div class="summary-card">
+          <h4>IP-адрес</h4>
+          <div class="summary-item">IPv4: 32 бит, 4 октета</div>
+          <div class="summary-item">IPv6: 128 бит</div>
+          <div class="summary-item">Классы A, B, C, D, E</div>
+          <div class="summary-item">Layer 3, LAN + WAN</div>
+          <div class="summary-item">Статический или DHCP</div>
+        </div>
+        <div class="summary-card">
+          <h4>Устройства сети</h4>
+          <div class="summary-item">NIC — подключение к сети</div>
+          <div class="summary-item">Switch — по MAC (Layer 2)</div>
+          <div class="summary-item">Hub — broadcast (Layer 1)</div>
+          <div class="summary-item">Router — по IP (Layer 3)</div>
+          <div class="summary-item">WAP — точка Wi-Fi доступа</div>
+        </div>
+        <div class="summary-card">
+          <h4>Протоколы</h4>
+          <div class="summary-item">ARP — IP → MAC</div>
+          <div class="summary-item">DHCP — авто-IP</div>
+          <div class="summary-item">DNS — имя → IP</div>
+          <div class="summary-item">NAT — частный ↔ публичный IP</div>
+          <div class="summary-item">WPA2/3 — Wi-Fi шифрование</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrapper">
+      <p>Информатика · 9 класс · Тема: MAC-адрес и IP-адрес · Цели 9.5.1.1 – 9.5.1.4</p>
+      <p style="margin-top:6px">Дополнительный ресурс: <a href="https://www.youtube.com/watch?v=dOfQB-mlyMM"
+          target="_blank">youtube.com/watch?v=dOfQB-mlyMM</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // PROGRESS BAR
+    window.addEventListener('scroll', () => {
+      const total = document.body.scrollHeight - window.innerHeight;
+      const pct = (window.scrollY / total) * 100;
+      document.getElementById('progress-bar').style.width = pct + '%';
+    });
+
+    // DEVICE TOGGLE
+    function showDevice(id, el) {
+      document.querySelectorAll('.device-card').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.device-detail').forEach(d => { d.classList.remove('show'); });
+      el.classList.add('active');
+      const detail = document.getElementById('device-detail-' + id);
+      detail.classList.add('show');
+      detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // TASK PANEL SWITCH
+    function switchTask(id) {
+      document.querySelectorAll('.task-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.task-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('panel-' + id).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    // ============ QUIZ ============
+    const quizData = [
+      { q: 'Что такое MAC-адрес?', opts: ['Логический адрес в интернете', 'Физический адрес сетевой карты', 'Название производителя', 'Протокол передачи данных'], ans: 1, exp: 'MAC-адрес — это физический (аппаратный) адрес сетевой карты, «зашитый» производителем.' },
+      { q: 'Сколько бит содержит MAC-адрес?', opts: ['32 бита', '64 бита', '48 бит', '128 бит'], ans: 2, exp: 'MAC-адрес состоит из 48 бит (6 байт), записывается в шестнадцатеричной системе.' },
+      { q: 'Что означает OUI в структуре MAC-адреса?', opts: ['Адрес хоста', 'Код производителя (первые 24 бит)', 'Номер порта', 'Идентификатор сети'], ans: 1, exp: 'OUI (Organizationally Unique Identifier) — первые 24 бита MAC, идентифицирующие производителя.' },
+      { q: 'Какой протокол определяет MAC-адрес по известному IP?', opts: ['DNS', 'DHCP', 'FTP', 'ARP'], ans: 3, exp: 'ARP (Address Resolution Protocol) позволяет найти MAC-адрес устройства по его IP-адресу.' },
+      { q: 'Сколько бит в IPv4-адресе?', opts: ['16 бит', '32 бита', '48 бит', '128 бит'], ans: 1, exp: 'IPv4-адрес состоит из 32 бит (4 октета по 8 бит каждый).' },
+      { q: 'Что такое DHCP?', opts: ['Протокол шифрования', 'Протокол автоматического назначения IP-адресов', 'Тип сетевого кабеля', 'Физический адрес устройства'], ans: 1, exp: 'DHCP (Dynamic Host Configuration Protocol) автоматически назначает IP-адреса устройствам в сети.' },
+      { q: 'Какое устройство передаёт данные на ВСЕ порты, не различая получателей?', opts: ['Маршрутизатор', 'Коммутатор', 'Концентратор (хаб)', 'Сетевая карта'], ans: 2, exp: 'Концентратор (Hub) рассылает данные на все порты — это его главный недостаток.' },
+      { q: 'На каком уровне модели OSI работает маршрутизатор?', opts: ['Физическом (Layer 1)', 'Канальном (Layer 2)', 'Сетевом (Layer 3)', 'Транспортном (Layer 4)'], ans: 2, exp: 'Маршрутизатор работает на Layer 3 (Сетевой уровень), используя IP-адреса для маршрутизации.' },
+      { q: 'Какой тип IP-адреса назначается вручную и не меняется?', opts: ['Динамический', 'Публичный', 'Статический', 'Частный'], ans: 2, exp: 'Статический IP-адрес назначается вручную администратором и не меняется при перезагрузке.' },
+      { q: 'Коммутатор использует для передачи данных...', opts: ['IP-адреса', 'MAC-адреса', 'DNS-имена', 'Порты'], ans: 1, exp: 'Коммутатор (Switch) хранит таблицу MAC-адресов и передаёт кадры только на нужный порт.' },
+    ];
+
+    function buildQuiz() {
+      const c = document.getElementById('quiz-container');
+      c.innerHTML = quizData.map((q, i) => `
+    <div class="quiz-q" id="qq-${i}">
+      <div class="quiz-q-num">ВОПРОС ${i + 1} / ${quizData.length}</div>
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((o, j) => `
+          <label class="quiz-opt" id="opt-${i}-${j}" onclick="selectOpt(${i},${j})">
+            <input type="radio" name="q${i}" value="${j}">
+            <div class="quiz-radio"></div>
+            ${o}
+          </label>
+        `).join('')}
+      </div>
+      <div class="quiz-feedback" id="fb-${i}"></div>
+    </div>
+  `).join('');
+    }
+
+    function selectOpt(qi, oi) {
+      document.querySelectorAll(`[id^="opt-${qi}-"]`).forEach(el => el.classList.remove('selected'));
+      document.getElementById(`opt-${qi}-${oi}`).classList.add('selected');
+    }
+
+    function checkQuiz() {
+      let score = 0;
+      quizData.forEach((q, i) => {
+        const opts = document.querySelectorAll(`[id^="opt-${i}-"]`);
+        let sel = -1;
+        opts.forEach((o, j) => { if (o.classList.contains('selected')) sel = j; });
+        opts.forEach((o, j) => {
+          o.classList.remove('correct', 'wrong');
+          if (j === q.ans) o.classList.add('correct');
+          else if (j === sel && sel !== q.ans) o.classList.add('wrong');
+        });
+        const fb = document.getElementById(`fb-${i}`);
+        if (sel === q.ans) { score++; fb.textContent = '✅ Верно! ' + q.exp; fb.className = 'quiz-feedback show ok'; }
+        else if (sel === -1) { fb.textContent = '⚠️ Вы не выбрали ответ.'; fb.className = 'quiz-feedback show err'; }
+        else { fb.textContent = '❌ Неверно. ' + q.exp; fb.className = 'quiz-feedback show err'; }
+      });
+      const box = document.getElementById('quiz-score');
+      box.classList.add('show');
+      document.getElementById('score-num').textContent = `${score}/${quizData.length}`;
+      const pct = Math.round(score / quizData.length * 100);
+      document.getElementById('score-label').textContent = pct >= 80 ? '🎉 Отличный результат! Материал усвоен.' : pct >= 60 ? '👍 Хорошо! Повторите слабые места.' : '📖 Стоит повторить теорию и попробовать снова.';
+      box.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetQuiz() {
+      buildQuiz();
+      document.getElementById('quiz-score').classList.remove('show');
+    }
+    buildQuiz();
+
+    // ============ MATCH ============
+    const matchData = [
+      { term: 'MAC-адрес', def: 'Физический адрес сетевой карты, «прошитый» производителем', id: 'mac' },
+      { term: 'IP-адрес', def: 'Логический адрес устройства, используется для маршрутизации', id: 'ip' },
+      { term: 'Коммутатор', def: 'Устройство Layer 2, передаёт данные по MAC-адресу на нужный порт', id: 'sw' },
+      { term: 'Маршрутизатор', def: 'Устройство Layer 3, соединяет сети и маршрутизирует пакеты по IP', id: 'rt' },
+      { term: 'ARP', def: 'Протокол определения MAC-адреса по IP-адресу', id: 'arp' },
+      { term: 'DHCP', def: 'Протокол автоматического назначения IP-адресов устройствам', id: 'dhcp' },
+    ];
+
+    let dragSrc = null;
+    let dropTargets = {};
+
+    function buildMatch() {
+      const terms = document.getElementById('match-terms');
+      const defs = document.getElementById('match-defs');
+      const shuffled = [...matchData].sort(() => Math.random() - 0.5);
+      const shuffledDefs = [...matchData].sort(() => Math.random() - 0.5);
+      dropTargets = {};
+
+      terms.innerHTML = shuffled.map(m => `
+    <div class="match-item" draggable="true" data-id="${m.id}" id="term-${m.id}"
+      ondragstart="dragStart(event)" ondragend="dragEnd(event)">
+      ${m.term}
+    </div>
+  `).join('');
+
+      defs.innerHTML = shuffledDefs.map(m => `
+    <div class="drop-zone" data-id="${m.id}" id="drop-${m.id}"
+      ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="drop(event)">
+      <span class="drop-placeholder" style="color:var(--muted);font-size:12px">Перетащите сюда...</span>
+      <span class="drop-def">${m.def}</span>
+    </div>
+  `).join('');
+
+      document.getElementById('match-result').style.display = 'none';
+    }
+
+    function dragStart(e) {
+      dragSrc = e.target;
+      e.target.classList.add('dragging');
+      e.dataTransfer.setData('text/plain', e.target.dataset.id);
+    }
+    function dragEnd(e) { e.target.classList.remove('dragging'); }
+    function dragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+    function dragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+    function drop(e) {
+      e.preventDefault();
+      const zoneId = e.currentTarget.dataset.id;
+      const termId = e.dataTransfer.getData('text/plain');
+      const zone = document.getElementById('drop-' + zoneId);
+      zone.classList.remove('drag-over');
+      zone.classList.add('filled');
+      zone.querySelector('.drop-placeholder').style.display = 'none';
+      // Remove term from previous zone if re-dropped
+      document.querySelectorAll('.drop-zone').forEach(z => {
+        if (z.dataset.dropped === termId && z.dataset.id !== zoneId) {
+          z.dataset.dropped = '';
+          z.classList.remove('filled');
+          z.querySelector('.drop-placeholder').style.display = '';
+        }
+      });
+      zone.dataset.dropped = termId;
+      // Show term name in zone
+      let existing = zone.querySelector('.dropped-term');
+      if (!existing) { existing = document.createElement('span'); existing.className = 'dropped-term'; zone.appendChild(existing); }
+      const termName = matchData.find(m => m.id === termId).term;
+      existing.textContent = ' [' + termName + ']';
+      existing.style.cssText = 'font-family:var(--font-mono);font-size:11px;color:var(--electric);margin-left:6px';
+    }
+
+    function checkMatch() {
+      let score = 0;
+      document.querySelectorAll('.drop-zone').forEach(z => {
+        z.classList.remove('correct', 'wrong');
+        const dropped = z.dataset.dropped;
+        if (!dropped) return;
+        if (dropped === z.dataset.id) { z.classList.add('correct'); score++; }
+        else z.classList.add('wrong');
+      });
+      const res = document.getElementById('match-result');
+      res.style.display = 'block';
+      if (score === matchData.length) {
+        res.style.cssText = 'display:block;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.3);color:var(--green);border-radius:12px;padding:14px 18px;font-size:14px;margin-top:14px';
+        res.textContent = `✅ Все ${score} пар совпадают! Отлично!`;
+      } else {
+        res.style.cssText = 'display:block;background:rgba(255,82,82,0.1);border:1px solid rgba(255,82,82,0.3);color:var(--red);border-radius:12px;padding:14px 18px;font-size:14px;margin-top:14px';
+        res.textContent = `❌ Правильно: ${score} из ${matchData.length}. Попробуйте снова!`;
+      }
+    }
+    function resetMatch() { buildMatch(); }
+    buildMatch();
+
+    // ============ FILL IN BLANK ============
+    const fillData = [
+      { before: 'MAC-адрес состоит из ', blank: '48', after: ' бит (6 байт) и записывается в шестнадцатеричной системе.', accept: ['48'] },
+      { before: 'Первые 24 бита MAC-адреса называются ', blank: 'OUI', after: ' и идентифицируют производителя.', accept: ['oui', 'OUI'] },
+      { before: 'Протокол ', blank: 'ARP', after: ' используется для определения MAC-адреса по IP-адресу.', accept: ['arp', 'ARP'] },
+      { before: 'IPv4-адрес состоит из ', blank: '4', after: ' октетов, каждый из которых может принимать значения от 0 до 255.', accept: ['4', 'четырех', 'четырёх'] },
+      { before: 'Коммутатор (Switch) работает на ', blank: '2', after: '-м уровне модели OSI (канальном).', accept: ['2', 'втором', 'Layer 2', 'Layer2'] },
+      { before: 'Протокол ', blank: 'DHCP', after: ' автоматически назначает IP-адреса устройствам в сети.', accept: ['dhcp', 'DHCP'] },
+    ];
+
+    function buildFill() {
+      const c = document.getElementById('fill-container');
+      c.innerHTML = fillData.map((f, i) => `
+    <div class="fill-task">
+      <div class="quiz-q-num">ЗАДАНИЕ ${i + 1}</div>
+      <p>${f.before}<input class="blank-input" id="fill-${i}" placeholder="?" spellcheck="false">${f.after}</p>
+    </div>
+  `).join('');
+      document.getElementById('fill-score').classList.remove('show');
+    }
+
+    function checkFill() {
+      let score = 0;
+      fillData.forEach((f, i) => {
+        const inp = document.getElementById(`fill-${i}`);
+        const val = inp.value.trim();
+        const ok = f.accept.some(a => a.toLowerCase() === val.toLowerCase());
+        inp.classList.remove('correct', 'wrong');
+        if (ok) { inp.classList.add('correct'); score++; }
+        else { inp.classList.add('wrong'); inp.placeholder = f.blank; }
+      });
+      const box = document.getElementById('fill-score');
+      box.classList.add('show');
+      document.getElementById('fill-score-num').textContent = `${score}/${fillData.length}`;
+      document.getElementById('fill-score-label').textContent = score === fillData.length ? '🎉 Все верно!' : `Правильных: ${score}. Посмотрите на подсказки в пустых полях.`;
+    }
+    function resetFill() { buildFill(); }
+    buildFill();
+
+    // ============ TRUE/FALSE ============
+    const tfData = [
+      { s: 'MAC-адрес является уникальным для каждой сетевой карты в мире.', ans: true, exp: 'Верно. MAC-адрес уникален — его назначает производитель, и двух одинаковых не существует.' },
+      { s: 'IP-адрес «прошит» в сетевую карту и никогда не меняется.', ans: false, exp: 'Неверно. IP-адрес — логический, он может меняться (динамический) или назначаться вручную.' },
+      { s: 'IPv6-адрес длиннее IPv4 и содержит 128 бит.', ans: true, exp: 'Верно. IPv6 = 128 бит, IPv4 = 32 бита.' },
+      { s: 'Концентратор (Hub) отправляет данные только нужному получателю по MAC-адресу.', ans: false, exp: 'Неверно. Хаб рассылает данные на ВСЕ порты. Это делает коммутатор (Switch).' },
+      { s: 'Маршрутизатор работает на 3-м (сетевом) уровне модели OSI.', ans: true, exp: 'Верно. Маршрутизатор работает на Layer 3, используя IP-адреса.' },
+      { s: 'MAC-адрес используется маршрутизатором для передачи пакетов между сетями.', ans: false, exp: 'Неверно. Маршрутизатор использует IP-адреса. MAC используют коммутаторы внутри LAN.' },
+      { s: 'DHCP-сервер автоматически назначает IP-адреса устройствам в сети.', ans: true, exp: 'Верно. DHCP (Dynamic Host Configuration Protocol) раздаёт IP-адреса автоматически.' },
+      { s: 'Беспроводная сеть (Wi-Fi) всегда быстрее проводной сети.', ans: false, exp: 'Неверно. Проводная сеть (оптоволокно) может достигать 100 Гбит/с, Wi-Fi значительно медленнее.' },
+    ];
+
+    function buildTF() {
+      const c = document.getElementById('tf-container');
+      c.innerHTML = tfData.map((t, i) => `
+    <div class="tf-item" id="tf-${i}">
+      <div class="tf-statement">${i + 1}. ${t.s}</div>
+      <div class="tf-buttons">
+        <button class="tf-btn" id="tf-t-${i}" onclick="selectTF(${i}, true)">✓ Верно</button>
+        <button class="tf-btn" id="tf-f-${i}" onclick="selectTF(${i}, false)">✗ Неверно</button>
+      </div>
+    </div>
+    <div class="tf-result" id="tf-res-${i}"></div>
+  `).join('');
+      document.getElementById('tf-score').classList.remove('show');
+    }
+
+    const tfSelections = {};
+    function selectTF(i, val) {
+      tfSelections[i] = val;
+      document.getElementById(`tf-t-${i}`).classList.remove('selected-true', 'selected-false');
+      document.getElementById(`tf-f-${i}`).classList.remove('selected-true', 'selected-false');
+      if (val) document.getElementById(`tf-t-${i}`).classList.add('selected-true');
+      else document.getElementById(`tf-f-${i}`).classList.add('selected-false');
+    }
+
+    function checkTF() {
+      let score = 0;
+      tfData.forEach((t, i) => {
+        const sel = tfSelections[i];
+        const tb = document.getElementById(`tf-t-${i}`);
+        const fb = document.getElementById(`tf-f-${i}`);
+        const res = document.getElementById(`tf-res-${i}`);
+        tb.classList.remove('selected-true', 'selected-false', 'correct', 'wrong');
+        fb.classList.remove('selected-true', 'selected-false', 'correct', 'wrong');
+        if (sel === undefined) { res.textContent = '⚠️ Не выбрано'; res.className = 'tf-result show'; res.style.color = 'var(--amber)'; return; }
+        if (sel === t.ans) {
+          score++;
+          (t.ans ? tb : fb).classList.add('correct');
+          res.textContent = '✅ ' + t.exp; res.className = 'tf-result show'; res.style.color = 'var(--green)';
+        } else {
+          (sel ? tb : fb).classList.add('wrong');
+          (t.ans ? tb : fb).classList.add('correct');
+          res.textContent = '❌ ' + t.exp; res.className = 'tf-result show'; res.style.color = 'var(--red)';
+        }
+      });
+      const box = document.getElementById('tf-score');
+      box.classList.add('show');
+      document.getElementById('tf-score-num').textContent = `${score}/${tfData.length}`;
+      document.getElementById('tf-score-label').textContent = score >= 7 ? '🎉 Отлично! Вы хорошо знаете тему.' : score >= 5 ? '👍 Хорошо! Есть что повторить.' : '📖 Рекомендуем перечитать теорию.';
+    }
+    function resetTF() { Object.keys(tfSelections).forEach(k => delete tfSelections[k]); buildTF(); }
+    buildTF();
+
+    // ============ IP BUILDER ============
+    function updateIP() {
+      const o1 = +document.getElementById('oct1').value;
+      const o2 = +document.getElementById('oct2').value;
+      const o3 = +document.getElementById('oct3').value;
+      const o4 = +document.getElementById('oct4').value;
+      ['oct1', 'oct2', 'oct3', 'oct4'].forEach(id => {
+        document.getElementById(id + '-val').textContent = document.getElementById(id).value;
+      });
+      const ip = `${o1}.${o2}.${o3}.${o4}`;
+      document.getElementById('ip-result').textContent = ip;
+      let cls = '', clsColor = '', info = '', isPrivate = false;
+      if (o1 >= 1 && o1 <= 126) { cls = 'Класс A'; clsColor = 'rgba(79,195,247,0.2);color:var(--electric)'; info = 'Крупные сети. Может обслуживать до 16 млн хостов.'; if (o1 === 10) isPrivate = true; }
+      else if (o1 === 127) { cls = 'Loopback'; clsColor = 'rgba(255,214,0,0.2);color:var(--amber)'; info = '127.0.0.1 — адрес обратной петли (ваш компьютер сам для себя).'; isPrivate = true; }
+      else if (o1 >= 128 && o1 <= 191) { cls = 'Класс B'; clsColor = 'rgba(206,147,216,0.2);color:var(--purple)'; info = 'Средние сети. До 65 534 хостов.'; if (o1 >= 172 && o1 <= 179 && o2 >= 16 && o2 <= 31) isPrivate = true; }
+      else if (o1 >= 192 && o1 <= 223) { cls = 'Класс C'; clsColor = 'rgba(0,230,118,0.2);color:var(--green)'; info = 'Малые сети (ЛВС). До 254 хостов.'; if (o1 === 192 && o2 === 168) isPrivate = true; }
+      else if (o1 >= 224 && o1 <= 239) { cls = 'Класс D'; clsColor = 'rgba(255,82,82,0.2);color:var(--red)'; info = 'Multicast — рассылка группам устройств.'; }
+      else { cls = 'Класс E'; clsColor = 'rgba(255,82,82,0.15);color:var(--red)'; info = 'Зарезервировано для исследований и экспериментов.'; }
+      const badge = document.getElementById('ip-class-badge');
+      badge.textContent = cls;
+      badge.style.cssText = `background:${clsColor};padding:6px 20px;border-radius:100px;font-size:13px;font-weight:700;font-family:var(--font-mono)`;
+      const pvBadge = document.getElementById('ip-private-badge');
+      pvBadge.textContent = isPrivate ? '🏠 Частный' : '🌐 Публичный';
+      pvBadge.style.cssText = `background:${isPrivate ? 'rgba(0,230,118,0.15);color:var(--green)' : 'rgba(79,195,247,0.15);color:var(--electric)'};padding:6px 20px;border-radius:100px;font-size:13px;font-weight:700;font-family:var(--font-mono)`;
+      document.getElementById('ip-info').innerHTML = info +
+        `<br><span style="color:var(--muted)">Бинарное представление:</span> <span style="font-family:var(--font-mono);font-size:11px;color:var(--electric)">${o1.toString(2).padStart(8, '0')}.${o2.toString(2).padStart(8, '0')}.${o3.toString(2).padStart(8, '0')}.${o4.toString(2).padStart(8, '0')}</span>`;
+    }
+    updateIP();
+  </script>
+</body>
+
+</html>
